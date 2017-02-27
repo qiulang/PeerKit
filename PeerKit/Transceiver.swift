@@ -21,10 +21,9 @@ public class Transceiver: SessionDelegate {
     let browser: Browser
 
     public init(displayName: String!) {
-        session = Session(displayName: displayName, delegate: nil)
+        session = Session(displayName: displayName)
         advertiser = Advertiser(mcSession: session.mcSession)
         browser = Browser(mcSession: session.mcSession)
-        session.delegate = self
     }
 
     func startTransceiving(serviceType: String, discoveryInfo: [String: String]? = nil) {
@@ -34,7 +33,6 @@ public class Transceiver: SessionDelegate {
     }
 
     func stopTransceiving() {
-        session.delegate = nil
         advertiser.stopAdvertising()
         browser.stopBrowsing()
         session.disconnect()
@@ -62,11 +60,15 @@ public class Transceiver: SessionDelegate {
         didDisconnect(myPeerID: myPeerID, peer: peer)
     }
 
-    public func receivedData(myPeerID: MCPeerID, data: Data, fromPeer peer: MCPeerID) {
+    public func receivedData(_ data: Data, fromPeer peer: MCPeerID) {
         didReceiveData(data, fromPeer: peer)
     }
 
-    public func finishReceivingResource(myPeerID: MCPeerID, resourceName: String, fromPeer peer: MCPeerID, atURL localURL: URL) {
-        didFinishReceivingResource(myPeerID: myPeerID, resourceName: resourceName, fromPeer: peer, atURL: localURL)
+    public func finishReceivingResource(_ name: String,session: MCSession, fromPeer peerID: MCPeerID, localURL: URL) {
+        didFinishReceivingResource(name, fromPeer: peerID, atURL: localURL)
+    }
+    
+    public func startReceivingResource(_ name: String, session: MCSession, fromPeer peerID: MCPeerID, progress: Progress) {
+        didStartReceivingResource(name, fromPeer: peerID, progress: progress)
     }
 }

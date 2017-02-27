@@ -14,7 +14,8 @@ import MultipeerConnectivity
 public typealias PeerBlock = ((_ myPeerID: MCPeerID, _ peerID: MCPeerID) -> Void)
 public typealias EventBlock = ((_ peerID: MCPeerID, _ event: String, _ object: AnyObject?) -> Void)
 public typealias ObjectBlock = ((_ peerID: MCPeerID, _ object: AnyObject?) -> Void)
-public typealias ResourceBlock = ((_ myPeerID: MCPeerID, _ resourceName: String, _ peer: MCPeerID, _ localURL: URL) -> Void)
+public typealias ResourceBlock = (( _ resourceName: String, _ peer: MCPeerID, _ localURL: URL) -> Void)
+public typealias ResourceProgressBlock = ((_ resourceName: String, _ peer: MCPeerID, _ progress:Progress) -> Void)
 
 // MARK: Event Blocks
 
@@ -24,6 +25,7 @@ public var onDisconnect: PeerBlock?
 public var onEvent: EventBlock?
 public var onEventObject: ObjectBlock?
 public var onFinishReceivingResource: ResourceBlock?
+public var onReceivingResource:ResourceProgressBlock?
 public var eventBlocks = [String: ObjectBlock]()
 
 // MARK: PeerKit Globals
@@ -37,6 +39,7 @@ public let myName = Host.current().localizedName ?? ""
 
 public var transceiver = Transceiver(displayName: myName)
 public var session: MCSession?
+let format = DateFormatter()
 
 // MARK: Event Handling
 
@@ -82,10 +85,19 @@ func didReceiveData(_ data: Data, fromPeer peer: MCPeerID) {
     }
 }
 
-func didFinishReceivingResource(myPeerID: MCPeerID, resourceName: String, fromPeer peer: MCPeerID, atURL localURL: URL) {
+func didStartReceivingResource(_ name: String, fromPeer peerID: MCPeerID, progress: Progress) {
+    guard let onReceivingResource =  onReceivingResource else {
+        return;
+    }
+    DispatchQueue.main.async {
+        onReceivingResource(name, peerID, progress)
+    }
+}
+
+func didFinishReceivingResource(_ name: String, fromPeer peerID: MCPeerID, atURL localURL: URL) {
     if let onFinishReceivingResource = onFinishReceivingResource {
         DispatchQueue.main.async {
-            onFinishReceivingResource(myPeerID, resourceName, peer, localURL)
+            onFinishReceivingResource(name, peerID, localURL)
         }
     }
 }
@@ -132,13 +144,30 @@ public func sendEvent(_ event: String, object: AnyObject? = nil, toPeers peers: 
 
 public func sendResourceAtURL(_ resourceURL: URL,
                    withName resourceName: String,
-  toPeers peers: [MCPeerID]? = session?.connectedPeers,
-  withCompletionHandler completionHandler: ((Error?) -> Void)?) -> [Progress?]? {
-
-    if let session = session {
-        return peers?.map { peerID in
+                   info: [String : Any]?,
+                   withCompletionHandler completionHandler: ((Error?) -> Void)? = nil) -> [Progress?]?  {
+    guard let session = session else {
+        return nil;
+    }
+    let peers = session.connectedPeers
+    if resourceURL.isFileURL {
+        return peers.map { peerID in
             return session.sendResource(at: resourceURL, withName: resourceName, toPeer: peerID, withCompletionHandler: completionHandler)
         }
     }
-    return nil
+    guard resourceURL.scheme?.hasPrefix("assets-library") == true,
+          let image = info?[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return nil;
+    }
+    format.timeStyle = .short
+    let documentDirectory = NSTemporaryDirectory() + "sentPic-" + format.string(from: Date.init()) + ".jpg"
+    let photoURL          = URL(fileURLWithPath: documentDirectory)
+    let data              = UIImageJPEGRepresentation(image, 1.0)
+    guard (try? data?.write(to: photoURL, options: Data.WritingOptions.atomic)) != nil  else {
+        print("why write file failed");
+        return nil
+    }
+    return peers.map { peerID in
+        return session.sendResource(at: photoURL, withName: resourceName, toPeer: peerID, withCompletionHandler: completionHandler)
+    }
 }

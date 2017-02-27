@@ -2,6 +2,8 @@
 
 ## An open-source Swift framework for building event-driven, zero-config Multipeer Connectivity apps
 
+Qiulang refactor it to make it more useful
+
 ## Usage
 
 ```swift
