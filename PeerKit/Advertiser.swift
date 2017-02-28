@@ -4,7 +4,7 @@
 //
 //  Created by JP Simard on 11/3/14.
 //  Copyright (c) 2014 JP Simard. All rights reserved.
-//
+//  Modified by Qiulang, just accept invitation but don't call stopAdvertising
 
 import Foundation
 import MultipeerConnectivity

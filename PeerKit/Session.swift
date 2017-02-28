@@ -4,7 +4,9 @@
 //
 //  Created by JP Simard on 11/3/14.
 //  Copyright (c) 2014 JP Simard. All rights reserved.
-//
+//  Modified by Qiulang, maintain a MCSessionState property
+//  Access transceiver directly, I believe most people will use block in PeerKit
+//  Instead of implementing SessionDelegate
 
 import Foundation
 import MultipeerConnectivity

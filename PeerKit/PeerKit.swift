@@ -4,7 +4,7 @@
 //
 //  Created by JP Simard on 11/5/14.
 //  Copyright (c) 2014 JP Simard. All rights reserved.
-//
+//  Modified by Qiulang to add support for sending/receiving image from UIImagePickerController
 
 import Foundation
 import MultipeerConnectivity
