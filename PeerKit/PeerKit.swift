@@ -159,7 +159,7 @@ public func sendResourceAtURL(_ resourceURL: URL,
           let image = info?[UIImagePickerControllerOriginalImage] as? UIImage else {
             return nil;
     }
-    format.timeStyle = .short
+    format.timeStyle = .medium
     let documentDirectory = NSTemporaryDirectory() + "sentPic-" + format.string(from: Date.init()) + ".jpg"
     let photoURL          = URL(fileURLWithPath: documentDirectory)
     let data              = UIImageJPEGRepresentation(image, 1.0)
