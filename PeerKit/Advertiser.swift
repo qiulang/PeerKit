@@ -12,6 +12,7 @@ import MultipeerConnectivity
 class Advertiser: NSObject, MCNearbyServiceAdvertiserDelegate {
 
     let mcSession: MCSession
+    
     init(mcSession: MCSession) {
         self.mcSession = mcSession
         super.init()

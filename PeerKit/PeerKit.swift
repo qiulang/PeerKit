@@ -17,7 +17,8 @@ public typealias ObjectBlock = ((_ peerID: MCPeerID, _ object: AnyObject?) -> Vo
 public typealias ResourceBlock = (( _ resourceName: String, _ peer: MCPeerID, _ localURL: URL) -> Void)
 public typealias ResourceProgressBlock = ((_ resourceName: String, _ peer: MCPeerID, _ progress:Progress) -> Void)
 
-// MARK: Event Blocks
+// MARK: Event Blocks, users of PeerKit should provide event handler they are interested
+// It is easier than implementing SessionDelegate
 
 public var onConnecting: PeerBlock?
 public var onConnect: PeerBlock?
@@ -41,7 +42,7 @@ public var transceiver = Transceiver(displayName: myName)
 public var session: MCSession?
 let format = DateFormatter()
 
-// MARK: Event Handling
+// MARK: Event Handling, re-directed from SessionDelegate
 
 func didConnecting(myPeerID: MCPeerID, peer: MCPeerID) {
     if let onConnecting = onConnecting {
@@ -94,11 +95,12 @@ func didStartReceivingResource(_ name: String, fromPeer peerID: MCPeerID, progre
     }
 }
 
-func didFinishReceivingResource(_ name: String, fromPeer peerID: MCPeerID, atURL localURL: URL) {
-    if let onFinishReceivingResource = onFinishReceivingResource {
-        DispatchQueue.main.async {
-            onFinishReceivingResource(name, peerID, localURL)
-        }
+func didFinishReceivingResource(_ name: String, fromPeer peerID: MCPeerID, localURL: URL) {
+    guard let onFinishReceivingResource = onFinishReceivingResource else {
+        return;
+    }
+    DispatchQueue.main.async {
+        onFinishReceivingResource(name, peerID, localURL)
     }
 }
 
@@ -121,7 +123,7 @@ public func stopTransceiving() {
     session = nil
 }
 
-// MARK: Events
+// MARK: Send message/resource
 
 public func sendEvent(_ event: String, object: AnyObject? = nil, toPeers peers: [MCPeerID]? = session?.connectedPeers) {
     guard let peers = peers, !peers.isEmpty else {
@@ -145,11 +147,13 @@ public func sendEvent(_ event: String, object: AnyObject? = nil, toPeers peers: 
 public func sendResourceAtURL(_ resourceURL: URL,
                    withName resourceName: String,
                    info: [String : Any]?,
-                   withCompletionHandler completionHandler: ((Error?) -> Void)? = nil) -> [Progress?]?  {
+                completionHandler: ((Error?) -> Void)? = nil) -> [Progress?]?  {
     guard let session = session else {
         return nil;
     }
     let peers = session.connectedPeers
+    //If I have more 2 connected peers and just send to one of them, sending will fail!
+    //Have not figured out why yet
     if resourceURL.isFileURL {
         return peers.map { peerID in
             return session.sendResource(at: resourceURL, withName: resourceName, toPeer: peerID, withCompletionHandler: completionHandler)
@@ -164,7 +168,6 @@ public func sendResourceAtURL(_ resourceURL: URL,
     let photoURL          = URL(fileURLWithPath: documentDirectory)
     let data              = UIImageJPEGRepresentation(image, 1.0)
     guard (try? data?.write(to: photoURL, options: Data.WritingOptions.atomic)) != nil  else {
-        print("why write file failed");
         return nil
     }
     return peers.map { peerID in

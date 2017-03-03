@@ -38,7 +38,7 @@ public class Session: NSObject, MCSessionDelegate {
     }
 
     // MARK: MCSessionDelegate
-    // http://stackoverflow.com/questions/18935288/why-does-my-mcsession-peer-disconnect-randomly, needs to check peerID
+    // http://stackoverflow.com/questions/18935288/why-does-my-mcsession-peer-disconnect-randomly, may need to check peerID
 
     public func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {

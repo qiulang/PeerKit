@@ -13,7 +13,7 @@ enum TransceiverMode {
     case Browse, Advertise, Both
 }
 
-public class Transceiver: SessionDelegate {
+public class Transceiver {
 
     var transceiverMode = TransceiverMode.Both
     let session: Session
@@ -47,7 +47,12 @@ public class Transceiver: SessionDelegate {
         browser.startBrowsing(serviceType: serviceType)
         transceiverMode = .Browse
     }
+}
 
+//MARK: - SessionDelegate, re-direct to PeerKit's public blocks which users should provide
+
+extension Transceiver: SessionDelegate {
+    
     public func connecting(myPeerID: MCPeerID, toPeer peer: MCPeerID) {
         didConnecting(myPeerID: myPeerID, peer: peer)
     }
@@ -65,7 +70,7 @@ public class Transceiver: SessionDelegate {
     }
 
     public func finishReceivingResource(_ name: String,session: MCSession, fromPeer peerID: MCPeerID, localURL: URL) {
-        didFinishReceivingResource(name, fromPeer: peerID, atURL: localURL)
+        didFinishReceivingResource(name, fromPeer: peerID, localURL: localURL)
     }
     
     public func startReceivingResource(_ name: String, session: MCSession, fromPeer peerID: MCPeerID, progress: Progress) {
