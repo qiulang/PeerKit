@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="peer" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="wMW-FD-inT" userLabel="top stack view">
+                                <rect key="frame" x="16" y="30" width="343" height="133.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyH-BK-Tbf">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="67"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bd-gE-JOu">
+                                        <rect key="frame" x="0.0" y="67" width="343" height="66.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Sending Picture"/>
+                                        <connections>
+                                            <action selector="chooseImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PaO-e0-JvC"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fT0-vK-LCf" userLabel="bottom stack view">
+                                <rect key="frame" x="16" y="163.5" width="343" height="493.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="waiting" translatesAutoresizingMaskIntoConstraints="NO" id="0iC-Ow-Gfi">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="332"/>
+                                    </imageView>
+                                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eiw-j9-Fip">
+                                        <rect key="frame" x="0.0" y="488.5" width="343" height="5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="751" constant="5" id="4oa-Sf-6sl"/>
+                                        </constraints>
+                                    </progressView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fT0-vK-LCf" secondAttribute="bottom" constant="10" id="2md-zn-oKa"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fT0-vK-LCf" secondAttribute="trailing" id="FoI-cR-fSy"/>
+                            <constraint firstItem="wMW-FD-inT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="K8u-9l-brA"/>
+                            <constraint firstItem="wMW-FD-inT" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.2" id="U1U-B0-Z9j"/>
+                            <constraint firstItem="fT0-vK-LCf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="glE-g3-5PZ"/>
+                            <constraint firstItem="wMW-FD-inT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="h86-P7-1Uf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wMW-FD-inT" secondAttribute="trailing" id="qlL-Bh-Wbj"/>
+                            <constraint firstItem="fT0-vK-LCf" firstAttribute="top" secondItem="wMW-FD-inT" secondAttribute="bottom" id="shz-ZB-08U"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="0iC-Ow-Gfi" id="CBr-Uf-f5m"/>
+                        <outlet property="nameLabel" destination="eyH-BK-Tbf" id="mBL-8h-K69"/>
+                        <outlet property="progressView" destination="eiw-j9-Fip" id="D0T-jP-0x8"/>
+                        <outlet property="sendButton" destination="6bd-gE-JOu" id="syP-Fi-iZf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="116" y="102.99850074962519"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="waiting" width="600" height="332"/>
+    </resources>
+</document>

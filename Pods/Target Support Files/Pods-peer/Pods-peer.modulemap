@@ -1,0 +1,6 @@
+framework module Pods_peer {
+  umbrella header "Pods-peer-umbrella.h"
+
+  export *
+  module * { export * }
+}

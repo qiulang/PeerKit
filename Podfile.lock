@@ -1,0 +1,19 @@
+PODS:
+  - PeerKit (3.0.0)
+  - SwiftyBeaver (1.1.1)
+
+DEPENDENCIES:
+  - PeerKit (from `PeerKit`)
+  - SwiftyBeaver
+
+EXTERNAL SOURCES:
+  PeerKit:
+    :path: PeerKit
+
+SPEC CHECKSUMS:
+  PeerKit: fa9e0c8280f3f4137be5865e1b23e2fc912ad3ce
+  SwiftyBeaver: 2b68694df862381235e32bcfc4ec991e26bf131d
+
+PODFILE CHECKSUM: 770fc35bda28704dd1d71dcb4ca14ede6fc43968
+
+COCOAPODS: 1.2.0.beta.3
