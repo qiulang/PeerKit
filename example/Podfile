@@ -6,7 +6,7 @@ target 'peer' do
   use_frameworks!
 
   # Pods for peer
-  pod 'PeerKit', :path => 'PeerKit'
+  pod 'PeerKit' , :path => '../PeerKit'
   pod 'SwiftyBeaver'
 
   target 'peerTests' do

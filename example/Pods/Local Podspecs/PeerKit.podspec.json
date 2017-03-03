@@ -1,6 +1,6 @@
 {
   "name": "PeerKit",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "summary": "Swift framework for building event-driven, zero-config Multipeer Connectivity apps",
   "authors": {
     "JP Simard": "jp@jpsim.com"
@@ -10,7 +10,7 @@
   "social_media_url": "https://twitter.com/simjp",
   "source": {
     "git": "https://github.com/qiulang/PeerKit.git",
-    "tag": "3.0.0"
+    "tag": "3.1.0"
   },
   "platforms": {
     "ios": "8.0",

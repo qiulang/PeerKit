@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'PeerKit'
-  s.version = '3.0.0'
+  s.version = '3.1.0'
   s.summary = 'Swift framework for building event-driven, zero-config Multipeer Connectivity apps'
   s.authors = { 'JP Simard' => 'jp@jpsim.com' }
   s.license = 'MIT'
@@ -14,5 +14,4 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.10'
   s.source_files = '*.swift'
   s.requires_arc = true
-  #s.dependency 'SwiftyBeaver'
 end
