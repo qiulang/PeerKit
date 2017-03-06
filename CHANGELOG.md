@@ -6,3 +6,18 @@
 
 ### Provide example to show how to send images from UIImagePickerController
 
+    public func imagePickerController(_ picker: UIImagePickerController, 
+        didFinishPickingMediaWithInfo info: [String : Any]) {
+        defer {
+            dismiss(animated: true, completion:nil)
+        }
+        
+        func send(_ url:URL) {
+            let progresses = PeerKit.sendResourceAtURL(url, 
+            resourceName: "send", info:info, completionHandler:{
+               ...
+            }
+        }
+        ...
+    }
+    

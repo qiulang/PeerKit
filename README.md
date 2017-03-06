@@ -7,6 +7,8 @@
 2. Re-implement sendResourceAtURL, add startReceivingResource, ResourceProgressBlock because it is my main use case, e.g. sending picture from UIImagePickerController
 3. Remove SessionDelegate from Session, access Transceiver directly. I don't think many people will implement SessionDelegate, after all we provide public block in PeerKit and I assume most PeerKit's users will use those blocks instead of implementing SessionDelegate.
 
+So to try my fork,  pod 'PeerKit', :git => 'https://github.com/qiulang/PeerKit.git'
+
 ## Usage
 
 ```swift
@@ -14,19 +16,16 @@
 //UIImagePickerController, the original implementation 
 //failed to do it right. It focused more on sending message.
 
------ original sample -----
-// Automatically detect and attach to other peers with this service type
-PeerKit.transceive("com-jpsim-myApp")
-
-enum Event: String {
-    case StartGame, EndGame
-}
-
-// Send a StartGame event with attached data to all peers
-PeerKit.sendEvent(Event.StartGame.rawValue, object: ["myInfo": "hello!"])
+public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    defer {
+         dismiss(animated: true, completion:nil)
+    }
+        
+    func send(_ url:URL) {
+         let progresses = PeerKit.sendResourceAtURL(url, resourceName: "send", info:info, completionHandler:{
+         ...
 ```
 
-See the [CardsAgainst](https://github.com/jpsim/CardsAgainst) app for example usage. Specifically the [ConnectionManager](https://github.com/jpsim/CardsAgainst/blob/master/CardsAgainst/Controllers/ConnectionManager.swift) class.
 
 ## License
 
