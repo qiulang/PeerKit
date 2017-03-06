@@ -145,17 +145,18 @@ public func sendEvent(_ event: String, object: AnyObject? = nil, toPeers peers: 
 }
 
 public func sendResourceAtURL(_ resourceURL: URL,
-                   withName resourceName: String,
+                              resourceName: String,
+                              peers: [MCPeerID]? = session?.connectedPeers,
                    info: [String : Any]?,
                 completionHandler: ((Error?) -> Void)? = nil) -> [Progress?]?  {
     guard let session = session else {
-        return nil;
+        return nil
     }
-    let peers = session.connectedPeers
-    //If I have more 2 connected peers and just send to one of them, sending will fail!
-    //Have not figured out why yet
+    guard let _ = peers?.first else {
+        return nil
+    }
     if resourceURL.isFileURL {
-        return peers.map { peerID in
+        return peers!.map { peerID in
             return session.sendResource(at: resourceURL, withName: resourceName, toPeer: peerID, withCompletionHandler: completionHandler)
         }
     }
@@ -170,7 +171,7 @@ public func sendResourceAtURL(_ resourceURL: URL,
     guard (try? data?.write(to: photoURL, options: Data.WritingOptions.atomic)) != nil  else {
         return nil
     }
-    return peers.map { peerID in
+    return peers!.map { peerID in
         return session.sendResource(at: photoURL, withName: resourceName, toPeer: peerID, withCompletionHandler: completionHandler)
     }
 }

@@ -41,7 +41,8 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate,UINavigat
             self.log.debug("\(PeerKit.session?.connectedPeers)")
         }
         PeerKit.onDisconnect = { (_ myPeerID: MCPeerID, _ peerID: MCPeerID) -> Void in
-            if PeerKit.session?.connectedPeers.count == 0 {
+            if PeerKit.session == nil ||
+               PeerKit.session?.connectedPeers.count == 0 {
                 self.sendButton.isEnabled = false
                 self.nameLabel.text = "Waiting"
             } else {
@@ -81,8 +82,9 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate,UINavigat
         }
         
         func send(_ url:URL) {
-            //let sendto:MCPeerID = PeerKit.session!.connectedPeers.first!
-            let progresses = PeerKit.sendResourceAtURL(url, withName: "send", info:info, completionHandler:{
+            let sendto:MCPeerID = PeerKit.session!.connectedPeers.first!
+            //let progresses = PeerKit.sendResourceAtURL(url, resourceName: "send", info:info, completionHandler:{
+            let progresses = PeerKit.sendResourceAtURL(url, resourceName: "send", peers:[sendto], info:info, completionHandler:{
                 error in
                 if let error = error {
                     print(error.localizedDescription)
